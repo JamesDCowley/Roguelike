@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-
 void combat(Player &player, Enemy &enemy){
 	cout << "\n\n##############################" << endl;
 	cout << "ENEMY ENCOUNTERD!" << endl;
@@ -21,7 +19,7 @@ void combat(Player &player, Enemy &enemy){
 		cout << "3. Defend" << endl;
 		cout << "4. Item" << endl;
 
-		int input; "
+		int input;
 		cin >> input;
 
 		switch(input){
@@ -45,7 +43,7 @@ void combat(Player &player, Enemy &enemy){
 void mainMenu() {}
 
 void playerInit() {}
-"
+
 int main(){
 	srand(time(NULL));
 	Dungeon dungeon(5);
