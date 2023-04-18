@@ -88,8 +88,8 @@ int main(){
 			}
 			enemyInRoom = rand() < 0.2 * RAND_MAX;
 			if(enemyInRoom){
-				enemy.row = rand() % curRow.NUM_ROWS-1;
-				enemy.col = rand() % curRow.NUM_COLS-1;
+				enemy.row = rand() % curRoom.NUM_ROWS-1;
+				enemy.col = rand() % curRoom.NUM_COLS-1;
 				enemy.hp = rand() % 10 + 1;
 			}
 		}
