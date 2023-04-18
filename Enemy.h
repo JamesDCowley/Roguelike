@@ -9,6 +9,7 @@ class Enemy{
         static const int ENEMY_RANGE = 2;
 
         int hp;
+        string name;
         enum enemyDir{
             DIR_UP,
             DIR_DOWN,
@@ -16,8 +17,9 @@ class Enemy{
             DIR_RIGHT
         };
 
-        Enemy(int r, int c, int h) : row(r), col(c), hp(h){}
-
+        Enemy(int r, int c, int h) : row(r), col(c), hp(h), name("Enemy"){}
+        Enemy(int r, int c, int h, string n) : row(r), col(c), hp(h), name(n) {}
+        
         void moveEnemy(enemyDir dir){
             switch(dir){
                 case DIR_UP :
