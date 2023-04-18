@@ -3,10 +3,11 @@
 #include "Dungeon.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Entity.h"
 
 using namespace std;
 
-void combat(Player &player, Enemy &enemy){
+void combat(Entity &player, Entity &enemy){
 	cout << "\n\n##############################" << endl;
 	cout << "ENEMY ENCOUNTERD!" << endl;
 	while(enemy.hp > 0 && player.hp > 0){
@@ -50,8 +51,10 @@ int main(){
 	dungeon.generateDungeon();
 
 	int curRow = dungeon.numRows / 2, curCol =  dungeon.numCols / 2;
+	Room curRoom = dungeon.getRoom(curRow, curCol);
 	
-	Player player(2,2,20);
+	Entity player(curRow, curCol, '@');
+
 	int playerTile = -1;
 	
 	bool enemyInRoom = false;
@@ -59,14 +62,13 @@ int main(){
 	//20% chance of enemy in the room
 	enemyInRoom = rand() < 0.2 * RAND_MAX;
 
-	Enemy enemy(rand() % dungeon.getRoom(curRow, curCol).NUM_ROWS-1, rand() % dungeon.getRoom(curRow, curCol).NUM_COLS-1, 1);
+	Entity enemy(rand() % curRoom.NUM_ROWS-1, rand() % curRoom.NUM_COLS-1, 1);
 
 	
 	while(playerTile != 4){
 		char input;
-		Room curRoom = dungeon.getRoom(curRow, curCol);
 		playerTile = curRoom.layout[player.row][player.col];
-		
+		curRoom = dungeon.getRoom(curRow, curCol);
 		
 		//Check if on door
 		if(playerTile == 2){
@@ -108,9 +110,9 @@ int main(){
 		cout << "Current Room: " << curRow << " " << curCol << endl;
 		cout << "HP: " << player.hp << endl;
 		if(enemyInRoom)
-			dungeon.getRoom(curRow, curCol).printRoom(player.row, player.col, enemy.row, enemy.col);
+			curRoom.printRoom(player.row, player.col, enemy.row, enemy.col);
 		else
-			dungeon.getRoom(curRow, curCol).printRoom(player.row, player.col);
+			curRoom.printRoom(player.row, player.col);
 		cout << "\nEnter W, A, S, D for movement: ";
 		cin >> input;
 
@@ -121,38 +123,38 @@ int main(){
 			case 'W' :
 				if(dungeon.getRoom(curRow, curCol).layout[player.row-1][player.col] == 1)
 					cout << "Wall Collision" << endl;
-				else player.movePlayer(player.DIR_UP);
+				else player.moveEntity(player.DIR_UP);
 				break;
 			case 'A' :
 				if(dungeon.getRoom(curRow, curCol).layout[player.row][player.col-1] == 1)
 					cout << "Wall Collision" << endl;
-				else player.movePlayer(player.DIR_LEFT);
+				else player.moveEntity(player.DIR_LEFT);
 				break;
 			case 'S' :
 				if(dungeon.getRoom(curRow, curCol).layout[player.row+1][player.col] == 1)
 					cout << "Wall Collision" << endl;
-				else player.movePlayer(player.DIR_DOWN);
+				else player.moveEntity(player.DIR_DOWN);
 				break;
 			case 'D' :
 				if(dungeon.getRoom(curRow, curCol).layout[player.row][player.col+1] == 1)
 					cout << "Wall Collision" << endl;
-				else player.movePlayer(player.DIR_RIGHT);
+				else player.moveEntity(player.DIR_RIGHT);
 				break;
 		}
 		
 		//Enemy movement
-		if(enemyInRoom && (abs(player.row - enemy.row) <= enemy.ENEMY_RANGE && abs(player.col - enemy.col) <= enemy.ENEMY_RANGE)){
+		if(enemyInRoom && (abs(player.row - enemy.row) <= 2 && abs(player.col - enemy.col) <= 2)){
 			if(enemy.row < player.row){
-				enemy.moveEnemy(enemy.DIR_DOWN);
+				enemy.moveEntity(enemy.DIR_DOWN);
 			}
 			else if(enemy.row > player.row){
-				enemy.moveEnemy(enemy.DIR_UP);
+				enemy.moveEntity(enemy.DIR_UP);
 			}
 			if(enemy.col < player.col){
-				enemy.moveEnemy(enemy.DIR_RIGHT);
+				enemy.moveEntity(enemy.DIR_RIGHT);
 			}
 			else if(enemy.col > player.col){
-				enemy.moveEnemy(enemy.DIR_LEFT);
+				enemy.moveEntity(enemy.DIR_LEFT);
 			}
 		}
 

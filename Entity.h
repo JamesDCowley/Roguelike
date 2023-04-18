@@ -26,6 +26,16 @@ class Entity{
             DIR_RIGHT
         };
 
+
+        Entity(int r, int c, char ch) : row(r), col(c), ch(ch) {
+            hp = 10;
+            ac = 10;
+            str = 10;
+            dex = 10;
+            con = 10;
+            arc = 10;
+        }
+
         /*
             Moves an entity depending on the specified direction.
 
